@@ -1,4 +1,4 @@
-### Kitten Api
+# Kitten Api
 
 ## Setup
 ```

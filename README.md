@@ -1,26 +1,15 @@
 ### Kitten Api
 
+## Setup
 ```
-clone repo
-```
-
-```
-cd repo
-```
-
-```
+git clone git@github.com:jonjburgess/crud-app-express.git
+cd crud-app-express
 npm install
-```
-
-```
 psql -f kittens.sql
-```
-
-```
 npm start
 ```
 
-### GET All kittens
+## GET All kittens
 ```
 http://localhost:3000/api/kittens
 ```
@@ -41,7 +30,7 @@ will return....
 }
 ```
 
-### GET Single kittens
+## GET Single kittens
 ```
 http://localhost:3000/api/kittens/1
 ```
@@ -60,7 +49,7 @@ will return....
 }
 ```
 
-### POST Create kitten
+## POST Create kitten
 ```
 $ curl --data "name=Jamie&breed=Tabby&age=6&sex=m" http://127.0.0.1:3000/api/kittens
 ```
@@ -72,7 +61,7 @@ will return....
 }
 ```
 
-### PUT Update kitten
+## PUT Update kitten
 ```
 $ curl -X PUT --data "name=Hunter&breed=Burmese&age=8&sex=f" http://127.0.0.1:3000/api/kittens/1
 ```
@@ -84,7 +73,7 @@ will return....
 }
 ```
 
-### DELETE Remove kitten
+## DELETE Remove kitten
 ```
 curl -X DELETE http://127.0.0.1:3000/api/kittens/1
 ```

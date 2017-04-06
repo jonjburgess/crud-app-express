@@ -75,7 +75,7 @@ will return....
 
 ## DELETE Remove kitten
 ```
-curl -X DELETE http://127.0.0.1:3000/api/kittens/1
+$ curl -X DELETE http://127.0.0.1:3000/api/kittens/1
 ```
 will return....
 ```

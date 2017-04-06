@@ -12,4 +12,4 @@ CREATE TABLE cats (
 );
 
 INSERT INTO cats (name, breed, age, sex)
-  VALUES ('Finlay', 'Siamese', 5, 'F');
+  VALUES ('Finlay', 'Siamese', 5, 'M');

@@ -3,15 +3,9 @@ var pgp = require('pg-promise')({ promiseLib: promise });
 var connectionString = 'postgres://localhost:5432/kittens';
 var db = pgp(connectionString);
 
-module.exports = {
-  getAllKittens: getAllKittens,
-  getSingleKitten: getSingleKitten,
-  createKitten: createKitten,
-  updateKitten: updateKitten,
-  removeKitten: removeKitten
-};
+module.exports = kittens = {};
 
-function getAllKittens(req, res, next) {
+kittens.getAllKittens = function(req, res, next) {
   db.any('select * from cats')
     .then(function (data) {
       res.status(200)
@@ -26,7 +20,7 @@ function getAllKittens(req, res, next) {
     });
 }
 
-function getSingleKitten(req, res, next) {
+kittens.getSingleKitten = function(req, res, next) {
   var catID = parseInt(req.params.id);
   db.one('select * from cats where id = $1', catID)
     .then(function (data) {
@@ -42,7 +36,7 @@ function getSingleKitten(req, res, next) {
     });
 }
 
-function createKitten(req, res, next) {
+kittens.createKitten = function(req, res, next) {
   req.body.age = parseInt(req.body.age);
   db.none('insert into cats(name, breed, age, sex)' +
       'values(${name}, ${breed}, ${age}, ${sex})',
@@ -59,7 +53,7 @@ function createKitten(req, res, next) {
     });
 }
 
-function updateKitten(req, res, next) {
+kittens.updateKitten = function(req, res, next) {
   db.none('update cats set name=$1, breed=$2, age=$3, sex=$4 where id=$5',
     [req.body.name, req.body.breed, parseInt(req.body.age),
       req.body.sex, parseInt(req.params.id)])
@@ -75,7 +69,7 @@ function updateKitten(req, res, next) {
     });
 }
 
-function removeKitten(req, res, next) {
+kittens.removeKitten = function(req, res, next) {
   var catID = parseInt(req.params.id);
   db.result('delete from cats where id = $1', catID)
     .then(function (result) {

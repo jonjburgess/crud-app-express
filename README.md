@@ -40,9 +40,9 @@ will return....
   "status": "success",
   "data": {
     "id": 1,
-    "name": "Finlay",
-    "breed": "Siamese",
-    "age": 5,
+    "name": "Sophia",
+    "breed": "Abyssinian",
+    "age": 12,
     "sex": "F"
   },
   "message": "Retrieved ONE kitten"
@@ -51,7 +51,7 @@ will return....
 
 ## POST Create kitten
 ```
-$ curl --data "name=Jamie&breed=Tabby&age=6&sex=m" http://127.0.0.1:3000/api/kittens
+$ curl --data "name=Jamie&breed=Tabby&age=6&sex=M" http://127.0.0.1:3000/api/kittens
 ```
 will return....
 ```

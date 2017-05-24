@@ -3,6 +3,10 @@ var pgp = require('pg-promise')({ promiseLib: promise });
 var connectionString = 'postgres://localhost:5432/kittens';
 var db = pgp(connectionString);
 
+var algoliasearch = require('algoliasearch');
+var client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_API_KEY);
+var index = client.initIndex('cats');
+
 module.exports = {
   getAllKittens: getAllKittens,
   getSingleKitten: getSingleKitten,
@@ -44,15 +48,28 @@ function getSingleKitten(req, res, next) {
 
 function createKitten(req, res, next) {
   req.body.age = parseInt(req.body.age);
-  db.none('insert into cats(name, breed, age, sex)' +
-      'values(${name}, ${breed}, ${age}, ${sex})',
+  db.one('insert into cats(name, breed, age, sex)' +
+      'values(${name}, ${breed}, ${age}, ${sex})' +
+      'RETURNING id, name, breed, age, sex',
     req.body)
-    .then(function () {
-      res.status(200)
+    .then(function (data) {
+      index.addObject({
+        name: data.name,
+        breed: data.breed,
+        age: data.age,
+        sex: data.sex
+      }, data.id, function(err, content) {
+        if (err) {
+          return next(err);
+        }
+
+        res.status(200)
         .json({
           status: 'success',
           message: 'Inserted one kitten'
         });
+      });
+
     })
     .catch(function (err) {
       return next(err);
@@ -64,11 +81,19 @@ function updateKitten(req, res, next) {
     [req.body.name, req.body.breed, parseInt(req.body.age),
       req.body.sex, parseInt(req.params.id)])
     .then(function () {
-      res.status(200)
+      index.saveObject({
+        objectID: parseInt(req.params.id),
+        name: req.body.name,
+        breed: req.body.breed,
+        age: parseInt(req.body.age),
+        sex: req.body.sex
+      }, function() {
+        res.status(200)
         .json({
           status: 'success',
           message: 'Updated kitten'
         });
+      });
     })
     .catch(function (err) {
       return next(err);
@@ -79,13 +104,15 @@ function removeKitten(req, res, next) {
   var catID = parseInt(req.params.id);
   db.result('delete from cats where id = $1', catID)
     .then(function (result) {
-      /* jshint ignore:start */
-      res.status(200)
+      index.deleteObjects([catID], function(err, content) {
+        /* jshint ignore:start */
+        res.status(200)
         .json({
           status: 'success',
           message: `Removed ${result.rowCount} kitten`
         });
-      /* jshint ignore:end */
+        /* jshint ignore:end */
+      });
     })
     .catch(function (err) {
       return next(err);

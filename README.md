@@ -5,7 +5,7 @@
 git clone git@github.com:jonjburgess/crud-app-express.git
 cd crud-app-express
 npm install
-psql -f kittens.sql
+npm run setup
 npm start
 ```
 
@@ -63,7 +63,7 @@ will return....
 
 ## PUT Update kitten
 ```
-$ curl -X PUT --data "name=Hunter&breed=Burmese&age=8&sex=f" http://127.0.0.1:3000/api/kittens/1
+$ curl -X PUT --data "name=Sophia&breed=Abyssinian&age=8&sex=F" http://127.0.0.1:3000/api/kittens/1
 ```
 will return....
 ```
@@ -75,7 +75,7 @@ will return....
 
 ## DELETE Remove kitten
 ```
-curl -X DELETE http://127.0.0.1:3000/api/kittens/1
+$ curl -X DELETE http://127.0.0.1:3000/api/kittens/1
 ```
 will return....
 ```
